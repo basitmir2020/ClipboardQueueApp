@@ -11,12 +11,16 @@
 
     <Grid Margin="10">
         <Grid.Resources>
+            <!-- Converters for Visibility Logic -->
             <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         </Grid.Resources>
     
         <Grid.RowDefinitions>
+            <!-- Header Row -->
             <RowDefinition Height="Auto"/>
+            <!-- Search Row -->
             <RowDefinition Height="Auto"/>
+            <!-- Content Row -->
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -36,7 +40,8 @@
             </StackPanel>
         </Grid>
 
-        <!-- SEARCH -->
+        <!-- SEARCH BAR -->
+        <!-- Filters the list based on text input -->
         <TextBox Grid.Row="1" Margin="0,0,0,10" Padding="5"
                  Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -153,6 +158,7 @@
         </ListBox>
 
         <!-- STATUS OVERLAY -->
+        <!-- Displays ephemeral messages (Snackbars) at the bottom of the screen -->
         <Border Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" 
                 Margin="20" Background="#CC000000" CornerRadius="20" Padding="15,8"
                 Visibility="{Binding IsStatusVisible, Converter={StaticResource BoolToVis}}">

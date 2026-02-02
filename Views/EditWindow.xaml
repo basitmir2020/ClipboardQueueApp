@@ -9,9 +9,9 @@
     
     <Grid Margin="15">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/> <!-- Title -->
+            <RowDefinition Height="*"/>    <!-- Input Area -->
+            <RowDefinition Height="Auto"/> <!-- Buttons -->
         </Grid.RowDefinitions>
 
         <TextBlock Text="Edit Content" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"

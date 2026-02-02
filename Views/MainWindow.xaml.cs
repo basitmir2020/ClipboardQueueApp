@@ -11,6 +11,9 @@ using WpfKeyEventArgs = System.Windows.Input.KeyEventArgs;
 
 namespace ClipboardQueueApp.Views;
 
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+/// </summary>
 public partial class MainWindow : Window
 {
     private readonly ClipboardService _clipboardService = new();
@@ -26,6 +29,9 @@ public partial class MainWindow : Window
         Loaded += OnLoaded;
     }
 
+    /// <summary>
+    /// Initializes services when the window is loaded.
+    /// </summary>
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
         _trayService.Init(this);
@@ -49,6 +55,9 @@ public partial class MainWindow : Window
         };
     }
     
+    /// <summary>
+    /// Handles global hotkeys to switch themes.
+    /// </summary>
     private void Window_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
     {
         if (Keyboard.Modifiers == ModifierKeys.Control && e.Key == Key.D)
@@ -75,6 +84,9 @@ public partial class MainWindow : Window
 
 
 
+    /// <summary>
+    /// Cleans up resources (Tray, Hotkeys) when the window is closed.
+    /// </summary>
     protected override void OnClosed(EventArgs e)
     {
         _trayService.Dispose();     // cleanup tray icon
