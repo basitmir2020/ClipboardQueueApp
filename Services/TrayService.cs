@@ -24,7 +24,10 @@ public class TrayService
     
     public void Dispose()
     {
-        _tray.Visible = false;
-        _tray.Dispose();
+        if (_tray != null)
+        {
+            _tray.Visible = false;
+            _tray.Dispose();
+        }
     }
 }

@@ -9,19 +9,22 @@ public class HotkeyService
     private const int HOTKEY_ID = 9000;
     private const int WM_HOTKEY = 0x0312;
 
+    private IntPtr _handle;
+
     public void Register(Window window)
     {
         var helper = new WindowInteropHelper(window);
+        _handle = helper.Handle; // Cache the handle
 
         RegisterHotKey(
-            helper.Handle,
+            _handle,
             HOTKEY_ID,
             MOD_CONTROL | MOD_ALT,
             0x56 // V key
         );
 
-        var source = HwndSource.FromHwnd(helper.Handle);
-        source.AddHook(WndProc);
+        var source = HwndSource.FromHwnd(_handle);
+        source?.AddHook(WndProc);
     }
 
     private IntPtr WndProc(
@@ -63,10 +66,11 @@ public class HotkeyService
 
     public void Unregister()
     {
-        var hwnd = new WindowInteropHelper(
-            System.Windows.Application.Current.MainWindow!).Handle;
-
-        UnregisterHotKey(hwnd, HOTKEY_ID);
+        if (_handle != IntPtr.Zero)
+        {
+            UnregisterHotKey(_handle, HOTKEY_ID);
+            _handle = IntPtr.Zero;
+        }
     }
 
 }
