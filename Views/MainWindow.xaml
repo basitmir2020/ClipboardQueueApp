@@ -5,7 +5,7 @@
         Foreground="{DynamicResource Fg}"
         PreviewKeyDown="Window_PreviewKeyDown"
         Focusable="True"
-        Title="Clipboard Queue"
+        Title="ClipFlow"
         Height="500"
         Width="700">
 
@@ -30,7 +30,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Clipboard Queue" FontSize="20" FontWeight="Bold" 
+            <TextBlock Text="ClipFlow" FontSize="20" FontWeight="Bold" 
                        Foreground="{DynamicResource Fg}" VerticalAlignment="Center"/>
             
             <StackPanel Grid.Column="1" Orientation="Horizontal">
