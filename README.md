@@ -19,11 +19,7 @@ ClipboardQueueApp
 │   ├── App.xaml
 │   ├── MainWindow.xaml
 │   └── ClipboardQueueApp.csproj
-├── installer/
-│   └── ClipboardQueueInstaller.iss
 ├── docs/
-│   ├── INSTALL.md
-│   ├── TESTING.md
 │   └── ARCHITECTURE.md
 ├── README.md
 ├── LICENSE
