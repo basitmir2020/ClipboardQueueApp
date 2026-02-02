@@ -9,26 +9,112 @@
         Height="500"
         Width="700">
 
-    <DockPanel>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <TextBox
-            DockPanel.Dock="Top"
-            Margin="5"
-            Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" />
+        <!-- HEADER -->
+        <Grid Grid.Row="0" Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Clipboard Queue" FontSize="20" FontWeight="Bold" 
+                       Foreground="{DynamicResource Fg}" VerticalAlignment="Center"/>
+            
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Button Content="Clear All" Command="{Binding ClearAllCommand}" 
+                        Padding="10,5" Margin="5,0"/>
+            </StackPanel>
+        </Grid>
 
-        <ListBox ItemsSource="{Binding FilteredItems}">
+        <!-- SEARCH -->
+        <TextBox Grid.Row="1" Margin="0,0,0,10" Padding="5"
+                 Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" />
+
+        <!-- LIST -->
+        <ListBox Grid.Row="2" ItemsSource="{Binding FilteredItems}" 
+                 Background="Transparent" BorderThickness="0"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Background" Value="{DynamicResource CardBg}"/>
+                    <Setter Property="Margin" Value="0,0,0,5"/>
+                    <Setter Property="Padding" Value="5"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListBoxItem">
+                                <Border Background="{TemplateBinding Background}" 
+                                        CornerRadius="5" Padding="{TemplateBinding Padding}"
+                                        SnapsToDevicePixels="true">
+                                    <ContentPresenter />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource HoverBg}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource HoverBg}"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                     <EventSetter Event="MouseDoubleClick" Handler="OnItemDoubleClick"/>
                 </Style>
             </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Text}"
-                               TextTrimming="CharacterEllipsis"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <StackPanel Grid.Column="0">
+                            <!-- Helper text -->
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                                <TextBlock Text="{Binding CopiedAt, StringFormat=t}" 
+                                           FontSize="10" Foreground="{DynamicResource SecondaryFg}"/>
+                                <TextBlock Text=" • " FontSize="10" Foreground="{DynamicResource SecondaryFg}"/>
+                                <TextBlock FontSize="12" Foreground="Goldenrod" FontWeight="Bold">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value=""/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsPinned}" Value="True">
+                                                    <Setter Property="Text" Value="📌"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </StackPanel>
+                            
+                            <TextBlock Text="{Binding Text}" 
+                                       TextTrimming="CharacterEllipsis" 
+                                       MaxHeight="36" TextWrapping="Wrap"
+                                       Foreground="{DynamicResource Fg}"/>
+                        </StackPanel>
+
+                        <!-- Actions -->
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                             <Button Content="📌" 
+                                     Command="{Binding DataContext.PinCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                     CommandParameter="{Binding}"
+                                     Background="Transparent" BorderThickness="0" Margin="2"/>
+                             <Button Content="🗑️" 
+                                     Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                     CommandParameter="{Binding}"
+                                     Background="Transparent" BorderThickness="0" Margin="2"/>
+                        </StackPanel>
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-
-    </DockPanel>
+    </Grid>
 </Window>

@@ -8,17 +8,22 @@ Clipboard Queue is a modern, efficient **Windows clipboard manager** built with 
 
 ## ✨ Features
 
-*   **📋 Smart Capture**: Automatically listens to and stores clipboard changes (Text, RichText, Images).
-*   **📂 Categorization**: Organize items into **General**, **Code**, **Work**, and **Personal** categories.
-*   **💾 Auto-Persistence**: seamless saving to `%TEMP%\clipboard.json` for lightweight persistence.
+### Smart Clipboard Management
+*   **📋 Live Capture**: Automatically records Text, RichText, and Images.
+*   **📂 Categorization**: Auto-sorts content into **General**, **Code**, **Work**, and **Personal** bins.
+*   **📌 Pinning**: Keep frequently used items at the top of your list.
+*   **🔍 Search**: Instant search filter to find buried clips.
+*   **🗑️ Easy Cleanup**: Delete individual items or **Clear All** with a single click.
+
+### Modern User Experience
+*   **🎨 Card Design**: Beautiful, modern UI with clear typography and hover effects.
+*   **🌗 Theming**: Native Dark and Light mode support (`Ctrl + D`, `Ctrl + L`).
+*   **🪟 Stealth Mode**: Minimizes to the System Tray to stay out of your way.
 *   **⌨️ Global Hotkeys**:
-    *   `Ctrl + Alt + V`: Toggle the application window.
-    *   `Ctrl + D`: Switch to Dark Mode.
-    *   `Ctrl + L`: Switch to Light Mode.
-*   **📌 Pinning**: Pin important items to keep them accessible.
-*   **🔍 Search**: Quickly filter your history to find what you need.
-*   **🪟 System Tray**: Minimizes to the system tray to run unobtrusively in the background.
-*   **🎨 Theming**: Built-in support for Dark and Light themes.
+    *   `Ctrl + Alt + V`: Show/Hide App
+    *   `Ctrl + D`: Dark Mode
+    *   `Ctrl + L`: Light Mode
+*   **💾 Auto-Save**: History persists across reboots (saved to `%TEMP%\clipboard.json`).
 
 ---
 
@@ -27,6 +32,7 @@ Clipboard Queue is a modern, efficient **Windows clipboard manager** built with 
 *   **Framework**: [Microsoft .NET 10.0](https://dotnet.microsoft.com/)
 *   **UI Library**: Windows Presentation Foundation (WPF)
 *   **Architecture**: MVVM (Model-View-ViewModel)
+*   **Pattern**: Command Pattern for UI interactions (RelayCommand)
 *   **Data Format**: JSON (System.Text.Json)
 
 ---
@@ -59,11 +65,12 @@ dotnet run
 ClipboardQueueApp
 ├── Models/             # Data models (ClipboardItem, Enums)
 ├── Services/           # Core logic (Clipboard monitoring, Storage, Hotkeys)
-├── ViewModels/         # MVVM ViewModels (MainViewModel)
-├── Views/              # UI Components (MainWindow)
-├── Themes/             # Resource dictionaries for specific themes
+├── ViewModels/         # MainViewModel with filtering, sorting, and commands
+├── Views/              # MainWindow with modern XAML templates and styles
+├── Commands/           # Reusable ICommand implementations (RelayCommand)
+├── Themes/             # Styling resources (Light.xaml, Dark.xaml)
 ├── docs/               # Documentation
-└── App.xaml            # Application entry point & resource merging
+└── App.xaml            # Application entry point
 ```
 
 ---
@@ -73,7 +80,7 @@ ClipboardQueueApp
 The application stores its data in your temporary directory:
 `%TEMP%\clipboard.json`
 
-Clear this file if you wish to reset your clipboard history manually, or use the in-app controls if available.
+Clear this file if you wish to reset your clipboard history manually, or use the **Clear All** button in the app.
 
 ---
 
