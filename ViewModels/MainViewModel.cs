@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Threading.Tasks;
 using ClipboardQueueApp.Models;
 
 namespace ClipboardQueueApp.ViewModels;
@@ -27,6 +28,22 @@ public class MainViewModel : INotifyPropertyChanged
     public ICommand DeleteCommand { get; }
     public ICommand PinCommand { get; }
     public ICommand ClearAllCommand { get; }
+    public ICommand EditCommand { get; }
+    public ICommand CopyCommand { get; }
+
+    private string _statusMessage;
+    public string StatusMessage
+    {
+        get => _statusMessage;
+        set { _statusMessage = value; OnPropertyChanged(); }
+    }
+
+    private bool _isStatusVisible;
+    public bool IsStatusVisible
+    {
+        get => _isStatusVisible;
+        set { _isStatusVisible = value; OnPropertyChanged(); }
+    }
 
     public MainViewModel()
     {
@@ -41,6 +58,46 @@ public class MainViewModel : INotifyPropertyChanged
         DeleteCommand = new ClipboardQueueApp.Commands.RelayCommand(Delete);
         PinCommand = new ClipboardQueueApp.Commands.RelayCommand(Pin);
         ClearAllCommand = new ClipboardQueueApp.Commands.RelayCommand(ClearAll);
+        EditCommand = new ClipboardQueueApp.Commands.RelayCommand(Edit);
+        CopyCommand = new ClipboardQueueApp.Commands.RelayCommand(Copy);
+    }
+
+    private async void ShowStatus(string message)
+    {
+        StatusMessage = message;
+        IsStatusVisible = true;
+        await Task.Delay(3000);
+        IsStatusVisible = false;
+    }
+
+    private void Copy(object? parameter)
+    {
+         if (parameter is ClipboardItem item && !string.IsNullOrEmpty(item.Text))
+        {
+            try
+            {
+                System.Windows.Clipboard.SetText(item.Text);
+                ShowStatus("Copied to clipboard");
+            }
+            catch { ShowStatus("Failed to copy"); }
+        }
+    }
+
+    private void Edit(object? parameter)
+    {
+        if (parameter is ClipboardItem item)
+        {
+            var dialog = new ClipboardQueueApp.Views.EditWindow(item.Text)
+            {
+                Owner = System.Windows.Application.Current.MainWindow
+            };
+            
+            if (dialog.ShowDialog() == true)
+            {
+                item.Text = dialog.ResultText;
+                ShowStatus("Item updated");
+            }
+        }
     }
 
     private void Delete(object? parameter)
@@ -48,6 +105,7 @@ public class MainViewModel : INotifyPropertyChanged
         if (parameter is ClipboardItem item)
         {
             Items.Remove(item);
+            ShowStatus("Item deleted");
         }
     }
 
@@ -57,12 +115,14 @@ public class MainViewModel : INotifyPropertyChanged
         {
             item.IsPinned = !item.IsPinned;
             FilteredItems.Refresh(); // Re-sort
+            ShowStatus(item.IsPinned ? "Item pinned" : "Item unpinned");
         }
     }
 
     private void ClearAll(object? parameter)
     {
         Items.Clear();
+        ShowStatus("All items cleared");
     }
 
     private bool Filter(object obj)

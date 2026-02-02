@@ -10,6 +10,10 @@
         Width="700">
 
     <Grid Margin="10">
+        <Grid.Resources>
+            <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        </Grid.Resources>
+    
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -27,6 +31,7 @@
             
             <StackPanel Grid.Column="1" Orientation="Horizontal">
                 <Button Content="Clear All" Command="{Binding ClearAllCommand}" 
+                        ToolTip="Clear all items from history" Cursor="Hand"
                         Padding="10,5" Margin="5,0"/>
             </StackPanel>
         </Grid>
@@ -35,10 +40,28 @@
         <TextBox Grid.Row="1" Margin="0,0,0,10" Padding="5"
                  Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" />
 
+        <!-- EMPTY STATE -->
+        <Grid Grid.Row="2" Panel.ZIndex="0">
+             <TextBlock Text="No items in history" 
+                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Foreground="{DynamicResource SecondaryFg}" FontSize="16"/>
+             <Grid.Style>
+                 <Style TargetType="Grid">
+                     <Setter Property="Visibility" Value="Collapsed"/>
+                     <Style.Triggers>
+                         <DataTrigger Binding="{Binding Items.Count}" Value="0">
+                             <Setter Property="Visibility" Value="Visible"/>
+                         </DataTrigger>
+                     </Style.Triggers>
+                 </Style>
+             </Grid.Style>
+        </Grid>
+
         <!-- LIST -->
         <ListBox Grid.Row="2" ItemsSource="{Binding FilteredItems}" 
                  Background="Transparent" BorderThickness="0"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 HorizontalContentAlignment="Stretch">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -56,6 +79,7 @@
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsMouseOver" Value="True">
                                         <Setter Property="Background" Value="{DynamicResource HoverBg}"/>
+                                        <Setter Property="Cursor" Value="Hand"/>
                                     </Trigger>
                                     <Trigger Property="IsSelected" Value="True">
                                         <Setter Property="Background" Value="{DynamicResource HoverBg}"/>
@@ -64,12 +88,16 @@
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
-                    <EventSetter Event="MouseDoubleClick" Handler="OnItemDoubleClick"/>
                 </Style>
             </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
+                        <Grid.InputBindings>
+                             <MouseBinding Gesture="LeftDoubleClick" 
+                                           Command="{Binding DataContext.CopyCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                           CommandParameter="{Binding}"/>
+                        </Grid.InputBindings>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
@@ -103,11 +131,18 @@
 
                         <!-- Actions -->
                         <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                             <Button Content="✎" 
+                                     ToolTip="Edit" Cursor="Hand"
+                                     Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
+                                     CommandParameter="{Binding}"
+                                     Background="Transparent" BorderThickness="0" Margin="2"/>
                              <Button Content="📌" 
+                                     ToolTip="Pin/Unpin" Cursor="Hand"
                                      Command="{Binding DataContext.PinCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
                                      CommandParameter="{Binding}"
                                      Background="Transparent" BorderThickness="0" Margin="2"/>
                              <Button Content="🗑️" 
+                                     ToolTip="Delete" Cursor="Hand"
                                      Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=Window}}" 
                                      CommandParameter="{Binding}"
                                      Background="Transparent" BorderThickness="0" Margin="2"/>
@@ -116,5 +151,13 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
+        <!-- STATUS OVERLAY -->
+        <Border Grid.Row="2" VerticalAlignment="Bottom" HorizontalAlignment="Center" 
+                Margin="20" Background="#CC000000" CornerRadius="20" Padding="15,8"
+                Visibility="{Binding IsStatusVisible, Converter={StaticResource BoolToVis}}">
+            <TextBlock Text="{Binding StatusMessage}" Foreground="White" FontWeight="SemiBold"/>
+        </Border>
+
     </Grid>
 </Window>

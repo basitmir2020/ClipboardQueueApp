@@ -72,13 +72,7 @@ public partial class MainWindow : Window
         base.OnStateChanged(e);
     }
     
-    private void OnItemDoubleClick(object sender, MouseButtonEventArgs e)
-    {
-        if (sender is ListBoxItem { DataContext: ClipboardItem item } && !string.IsNullOrEmpty(item.Text))
-        {
-            _clipboardService.SetClipboardText(item.Text);
-        }
-    }
+
 
 
     protected override void OnClosed(EventArgs e)
