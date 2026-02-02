@@ -1,5 +1,8 @@
 ﻿namespace ClipboardQueueApp.Models;
 
+/// <summary>
+/// Defines the type of content stored in the clipboard item.
+/// </summary>
 public enum ClipboardType
 {
     Text,
@@ -7,6 +10,9 @@ public enum ClipboardType
     Image
 }
 
+/// <summary>
+/// Categorizes clipboard items for organization.
+/// </summary>
 public enum ClipboardCategory
 {
     General,
@@ -15,6 +21,9 @@ public enum ClipboardCategory
     Personal
 }
 
+/// <summary>
+/// Represents a single entry in the clipboard history.
+/// </summary>
 public class ClipboardItem : System.ComponentModel.INotifyPropertyChanged
 {
     public ClipboardType Type { get; set; }
@@ -24,6 +33,9 @@ public class ClipboardItem : System.ComponentModel.INotifyPropertyChanged
     public byte[] ImageData { get; set; }
 
     private bool _isPinned;
+    /// <summary>
+    /// Gets or sets whether the item is pinned to the top of the list.
+    /// </summary>
     public bool IsPinned
     {
         get => _isPinned;

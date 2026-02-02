@@ -5,12 +5,19 @@ using ClipboardQueueApp.Models;
 
 namespace ClipboardQueueApp.Services;
 
+/// <summary>
+/// Monitors the system clipboard for changes and raises events.
+/// </summary>
 public class ClipboardService
 {
     public event Action<ClipboardItem>? ClipboardCaptured;
 
     private bool _internalClipboardChange;
 
+    /// <summary>
+    /// Starts monitoring the clipboard.
+    /// </summary>
+    /// <param name="window">The window handle source.</param>
     public void Start(Window window)
     {
         var source = HwndSource.FromHwnd(
@@ -57,6 +64,10 @@ public class ClipboardService
     /// <summary>
     /// Use this method when YOUR app sets clipboard content
     /// </summary>
+    /// <summary>
+    /// Sets text to the clipboard without triggering a self-update loop.
+    /// </summary>
+    /// <param name="text">The text to copy.</param>
     public void SetClipboardText(string text)
     {
         try

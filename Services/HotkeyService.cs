@@ -4,6 +4,9 @@ using System.Windows.Interop;
 
 namespace ClipboardQueueApp.Services;
 
+/// <summary>
+/// Handles registration of global hotkeys (e.g., Ctrl+Alt+V).
+/// </summary>
 public class HotkeyService
 {
     private const int HOTKEY_ID = 9000;
@@ -11,6 +14,10 @@ public class HotkeyService
 
     private IntPtr _handle;
 
+    /// <summary>
+    /// Registers the global hotkey for the window.
+    /// </summary>
+    /// <param name="window">The window to associate with the hotkey.</param>
     public void Register(Window window)
     {
         var helper = new WindowInteropHelper(window);
@@ -64,6 +71,9 @@ public class HotkeyService
     [DllImport("user32.dll")]
     private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
+    /// <summary>
+    /// Unregisters the global hotkey.
+    /// </summary>
     public void Unregister()
     {
         if (_handle != IntPtr.Zero)

@@ -8,11 +8,18 @@ using ClipboardQueueApp.Models;
 
 namespace ClipboardQueueApp.ViewModels;
 
+/// <summary>
+/// The primary ViewModel for the application, managing the list of clipboard items,
+/// filtering, and UI commands.
+/// </summary>
 public class MainViewModel : INotifyPropertyChanged
 {
     public ObservableCollection<ClipboardItem> Items { get; }
     public ICollectionView FilteredItems { get; }
 
+    /// <summary>
+    /// The search query used to filter the clipboard history.
+    /// </summary>
     private string _search;
     public string Search
     {
@@ -32,6 +39,9 @@ public class MainViewModel : INotifyPropertyChanged
     public ICommand CopyCommand { get; }
 
     private string _statusMessage;
+    /// <summary>
+    /// Gets or sets the message to display in the status overlay.
+    /// </summary>
     public string StatusMessage
     {
         get => _statusMessage;
@@ -39,6 +49,9 @@ public class MainViewModel : INotifyPropertyChanged
     }
 
     private bool _isStatusVisible;
+    /// <summary>
+    /// Controls the visibility of the status overlay.
+    /// </summary>
     public bool IsStatusVisible
     {
         get => _isStatusVisible;

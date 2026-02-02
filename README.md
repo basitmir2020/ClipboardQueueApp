@@ -1,6 +1,6 @@
-﻿# Clipboard Queue 🧠📋
+﻿# ClipFlow 🧠📋
 
-Clipboard Queue is a **production-ready Windows clipboard manager** built with **WPF** and **.NET 10.0**. It offers a premium user experience with smart history management, live feedback, and robust editing capabilities.
+ClipFlow is a **production-ready Windows clipboard manager** built with **WPF** and **.NET 10.0**. It offers a premium user experience with smart history management, live feedback, and robust editing capabilities.
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg) ![Platform](https://img.shields.io/badge/platform-Windows-lightgrey.svg) ![.NET](https://img.shields.io/badge/.NET-10.0-purple.svg)
 
