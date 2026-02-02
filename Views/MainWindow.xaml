@@ -1,0 +1,30 @@
+﻿<Window x:Class="ClipboardQueueApp.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Background="{StaticResource Bg}"
+        Foreground="{StaticResource Fg}"
+        PreviewKeyDown="Window_PreviewKeyDown"
+        Focusable="True"
+        Title="Clipboard Queue"
+        Height="500"
+        Width="700">
+
+    <DockPanel>
+
+        <TextBox
+            DockPanel.Dock="Top"
+            Margin="5"
+            Text="{Binding Search, UpdateSourceTrigger=PropertyChanged}" />
+
+        <ListBox ItemsSource="{Binding FilteredItems}"
+                 MouseDoubleClick="ClipboardItem_DoubleClick">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Text}"
+                               TextTrimming="CharacterEllipsis"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+    </DockPanel>
+</Window>
