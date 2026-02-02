@@ -12,7 +12,7 @@ public class ThemeService
         System.Windows.Application.Current.Resources.MergedDictionaries.Add(
             new ResourceDictionary
             {
-                Source = new Uri($"Themes/{theme}.xaml", UriKind.Relative)
+                Source = new Uri($"pack://application:,,,/Themes/{theme}.xaml")
             });
     }
 }
