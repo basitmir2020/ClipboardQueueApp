@@ -6,7 +6,6 @@ using System.Windows.Media;
 using ClipboardQueueApp.Models;
 using ClipboardQueueApp.Services;
 using ClipboardQueueApp.ViewModels;
-using ListBox = System.Windows.Forms.ListBox;
 using WpfKeyEventArgs = System.Windows.Input.KeyEventArgs;
 
 namespace ClipboardQueueApp.Views;
