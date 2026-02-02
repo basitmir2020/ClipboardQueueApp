@@ -59,8 +59,15 @@ public class ClipboardService
     /// </summary>
     public void SetClipboardText(string text)
     {
-        _internalClipboardChange = true;
-        System.Windows.Clipboard.SetText(text);
+        try
+        {
+            _internalClipboardChange = true;
+            System.Windows.Clipboard.SetText(text);
+        }
+        catch (COMException)
+        {
+            // Clipboard is busy or unavailable
+        }
     }
 
     [DllImport("user32.dll")]

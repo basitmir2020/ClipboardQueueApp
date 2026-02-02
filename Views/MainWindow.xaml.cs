@@ -65,23 +65,12 @@ public partial class MainWindow : Window
         base.OnStateChanged(e);
     }
     
-    private void ClipboardItem_DoubleClick(object sender, MouseButtonEventArgs e)
+    private void OnItemDoubleClick(object sender, MouseButtonEventArgs e)
     {
-        if (sender is not ListBox listBox)
-            return;
-
-        var element = e.OriginalSource as DependencyObject;
-
-        while (element != null && element is not ListBoxItem)
-            element = VisualTreeHelper.GetParent(element);
-
-        if (element is not ListBoxItem itemContainer)
-            return;
-
-        if (itemContainer.DataContext is not ClipboardItem item)
-            return;
-
-        _clipboardService.SetClipboardText(item.Text);
+        if (sender is ListBoxItem { DataContext: ClipboardItem item } && !string.IsNullOrEmpty(item.Text))
+        {
+            _clipboardService.SetClipboardText(item.Text);
+        }
     }
 
 
