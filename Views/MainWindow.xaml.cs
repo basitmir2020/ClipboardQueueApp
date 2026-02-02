@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Linq;
 using ClipboardQueueApp.Models;
 using ClipboardQueueApp.Services;
 using ClipboardQueueApp.ViewModels;
@@ -33,12 +34,18 @@ public partial class MainWindow : Window
 
         _clipboardService.ClipboardCaptured += item =>
         {
-            // Simple dedup
-            if (_vm.Items.Count > 0 &&
-                _vm.Items[0].Text == item.Text)
-                return;
+            var existingItem = _vm.Items.FirstOrDefault(i => i.Text == item.Text);
 
-            _vm.Items.Insert(0, item);
+            if (existingItem != null)
+            {
+                _vm.Items.Remove(existingItem);
+                existingItem.CopiedAt = DateTime.Now;
+                _vm.Items.Insert(0, existingItem);
+            }
+            else
+            {
+                _vm.Items.Insert(0, item);
+            }
         };
     }
     
